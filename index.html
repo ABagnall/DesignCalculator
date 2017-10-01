@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Design Calculator, V0.9</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A modular scale calculator to help designers make layout choices.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Archie Bagnall">
+
+    <link rel="canonical" href="https://www.archiebagnall.co.uk/calc">
+
+    <!-- Open Graph meta data -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Design Calculator, V0.9">
+    <meta property="og:description" content="A modular scale calculator to help designers make layout choices.">
+    <meta property="og:url" content="https://www.archiebagnall.co.uk/calc">
+    <meta property="og:site_name" content="Design Calculator - V1.0">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Design Calculator, V0.9" />
+    <meta name="twitter:description" content="A modular scale calculator to help designers make layout choices." />
+    <meta name="twitter:url" content="https://www.archiebagnall.co.uk/calc" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="icons/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="icons/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
+</head>
+
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+       v2.0 | 20110126
+       License: none (public domain)
+    */
+
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed, 
+    figure, figcaption, footer, header, hgroup, 
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure, 
+    footer, header, hgroup, menu, nav, section {
+        display: block;
+    }
+    body {
+        line-height: 1;
+    }
+    ol, ul {
+        list-style: none;
+    }
+    blockquote, q {
+        quotes: none;
+    }
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    a {
+        text-decoration: underline;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+       
+    
+    /* ----------------- */
+    /* DISABLE SCROLLBAR */
+    /* ----------------- */
+    
+    html {
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 0px;  /* remove scrollbar space */
+        background: transparent;  /* optional: just make scrollbar invisible */
+    }
+    
+    /* ------------------ */
+    /* UNIVERSAL CONTROLS */
+    /* ------------------ */
+    
+    .presetContainer button, .presetContainer label, .inputContainer #activeRatio, .inputContainer .height input, .inputContainer .width input, .inputContainer #modularScale, .footer {
+        text-align: center;
+    }
+    
+    .presetContainer, .inputContainer .height input, .inputContainer .height label, .inputContainer .width input, .inputContainer .width label, .inputContainer #modularScale, table {
+        width: 100%;
+    }
+    
+    body, .footer .logo svg {
+        margin: 0 auto;
+    }
+    
+    .presetContainer button, .inputContainer .height input, .inputContainer .width input, .inputContainer #modularScale {
+        font-size: 1rem;
+    }
+    
+    .presetContainer button, .presetContainer .printTab.activeTab, .inputContainer .height input, .inputContainer .height label, .inputContainer .width input, .inputContainer .width label {
+        border: none;
+    }
+    
+    .presetContainer button, .inputContainer .height input, .inputContainer .width input, .inputContainer #modularScale {
+        padding: 0.5rem 0;
+    }
+    
+    /* ---- */
+    /* BODY */
+    /* ---- */
+        
+    html, body {
+        background-color: #21252b;
+        color: #9ca4b3;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        line-height: 1.414;
+    }
+    
+    body {
+        width: 20rem;
+    }
+    
+    body a {
+        color: #717c92;
+    }
+    
+    .calculatorContainer {
+        background-color: #282c34;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        width: 17rem;
+        padding: 0 1.5rem 1.5rem;
+    }
+    
+    
+    /* ------ */
+    /* HEADER */
+    /* ------ */
+    
+    .header h1 {
+        font-size: 1.5rem;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+    
+    .header .calcLogo {
+        margin-bottom: 0.5rem;
+        display: inline-block;
+    }
+    
+    .header .calcLogo a {
+        cursor: default;
+    }
+    
+    .header .calcLogo svg {
+        height: 2.01rem
+    }
+    
+    .header .calcLogo svg .DCLogo-FillOne {fill:#4e77cb;}
+    .header .calcLogo svg .DCLogo-FilLTwo {fill:#7192d5;}
+    .header .calcLogo svg .DCLogo-FilLThree {fill:#3e5fa2;}
+    .header .calcLogo svg .DCLogo-FilLFour {fill:#94addf;}
+    
+    .header svg.helpIcon  {
+        fill: #717c92;
+        float: right;
+        margin-top: 0.5rem;
+    }
+    
+    .header svg.helpIcon:hover {
+        fill: #9ca4b3;
+    }
+    
+    
+    /* ---------------- */
+    /* PRESET CONTAINER */
+    /* ---------------- */
+    
+    .presetContainer {
+        background-color: #2F343E;
+        height: 9.75rem;
+        margin: 1.5rem 0;
+    }
+        /* Active Tab */
+    .presetContainer .activeTab { 
+        background-color: #4e77cb;
+        color: #fff;
+    }
+    
+        /* Tab */
+    .presetContainer button {
+        background-color: #3e4451;
+        color: #9ca4b3;
+        cursor: pointer;
+        float: left;
+        width: 33.333%;
+    }
+    
+        /* Preset Button */
+    .presetContainer input + span {
+        padding: 0.5rem 1rem;
+        border: 0.0625rem solid #3e434c;
+        cursor: pointer;
+        background-color: #282c34;
+        float:left;
+    }
+    
+        /* Preset Button: Checked */
+    .presetContainer input:checked + span {
+        background-color: #333842;
+        color: #fff;
+        border: 0.0625rem solid #659dfa;;
+    }
+    
+        /* Preset Button Hide Radio */
+    .presetContainer label input {
+        position: absolute;
+        top: -1.25rem;
+    }
+    
+        /* Tab Strokes: Center Lines */
+    .presetContainer .printTab {
+        border-left: 0.0265rem solid #21252b;
+        border-right: 0.0625rem solid #21252b;
+    }
+    
+    
+    /* --------------- */
+    /* INPUT CONTAINER */
+    /* --------------- */
+    
+    .inputContainer {
+        
+    }
+    
+        /* Active Ratio Number */
+    .inputContainer #activeRatio {
+        color: #FFC450;
+        font-size: 1.5rem;
+        margin-top: 0.5rem;
+    }
+    
+        /* Container: Height Inputs */
+    .inputContainer .height {
+        float: left;
+        margin-bottom: 0.5rem;
+        margin-left:-0.0625rem;
+        width: 50%;
+        
+    }
+    
+        /* Height Input Box */
+    .inputContainer .height input {
+        border-left: 0.0625rem solid #282c34;
+    }
+    
+        /* Container: Width Inputs */
+    .inputContainer .width {
+        float: left;
+        margin-bottom: 0.5rem;
+        width: 50%;
+    }
+    
+        /* Center Text In Dropdown */
+    .inputContainer select {
+        text-align-last: center;
+    }
+    
+    .inputContainer .ratio {
+        margin-bottom: 0.5rem;
+    }
+    
+    
+    /* ----- */
+    /* TABLE */
+    /* ----- */
+        
+        /* Cell Styling */
+    table td {
+        color: #ccc;
+        line-height:1.5;
+        padding-right: 3%;
+        text-align: right;
+        width: 22%;
+    }
+    
+        /* Table Column Headers */
+    table td.columnHead {
+        border-bottom:0.0625rem solid #9ca4b3;
+        color: #9ac76d;
+    }
+    
+        /* Line Every 5th Row */
+    table tr:nth-child(5n+6) {
+        border-bottom:0.0625rem solid #3e434c;
+    }
+    
+    
+    /* ------ */
+    /* FOOTER */
+    /* ------ */
+    
+    .footer {
+        color: #717c92;
+        font-size: 0.75rem;
+        padding: 1rem 0;
+    }
+    
+    .footer .logo svg {
+        display: block;
+        fill: #4f5767;
+        padding: 0.5rem;
+        width: 11.27rem;
+    }
+    
+    .footer .logo svg:hover {
+        fill: #717c92;
+    }
+</style>
+
+<html>
+    <body onload="renderActiveRatio(); tableRender(); renderActivePreset()">
+        
+        <div class="calculatorContainer">
+            
+            <div class="header">
+               
+                <div class="calcLogo"><a href="javascript:window.location.reload(true)" title="Reset">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 135 34"><title>Design Calculator Logo</title><path class="DCLogo-FillOne" d="M101,0V34h34V0Zm24.47,15.53h-2.79V11.69h-2.55V22.59h2.47v2.78h-9.24V22.59h2.47V11.69h-2.47v3.84h-2.83V8.91h14.93Z"/><rect class="DCLogo-FilLTwo" x="44.92" y="11.25" width="11.5" height="11.5"/><rect class="DCLogo-FilLTwo" x="40.29" y="11.25" width="2.88" height="11.5"/><rect class="DCLogo-FilLTwo" x="44.92" y="24.5" width="11.5" height="2.88"/><rect class="DCLogo-FilLTwo" x="44.92" y="6.63" width="11.5" height="2.88"/><path class="DCLogo-FilLTwo" d="M33.67,0V34h34V0ZM62.79,24.5H58.17v4.63h-15V24.5H38.54V9.5h4.63V4.88h15V9.5h4.63Z"/><rect class="DCLogo-FilLTwo" x="58.17" y="11.25" width="2.88" height="11.5"/><rect class="DCLogo-FilLThree" width="34" height="34"/><polygon class="DCLogo-FillOne" points="0 0 0 34 34 0 0 0"/><path class="DCLogo-FilLFour" d="M67.33,0V34h34V0Zm17,4.88a1.74,1.74,0,1,1-1.74,1.74A1.74,1.74,0,0,1,84.33,4.88Zm0,10.32a1.74,1.74,0,1,1-1.74,1.74A1.74,1.74,0,0,1,84.33,15.2ZM74,29.13a1.75,1.75,0,1,1,1.75-1.75A1.75,1.75,0,0,1,74,29.13Zm0-10.37A1.75,1.75,0,1,1,75.71,17,1.75,1.75,0,0,1,74,18.75ZM74,8.36a1.74,1.74,0,1,1,1.74-1.74A1.74,1.74,0,0,1,74,8.36ZM84.33,29.13a1.75,1.75,0,1,1,1.75-1.75A1.75,1.75,0,0,1,84.33,29.13ZM94.65,29a1.74,1.74,0,1,1,1.74-1.74A1.74,1.74,0,0,1,94.65,29Zm0-10.32a1.74,1.74,0,1,1,1.74-1.74A1.74,1.74,0,0,1,94.65,18.68Zm0-10.32A1.74,1.74,0,1,1,96.4,6.62,1.74,1.74,0,0,1,94.65,8.36Z"/></svg>
+                </a></div>
+                <a href="https://github.com/ABagnall/DesignCalculator" target="_blank" rel="noopener"><svg class="helpIcon" viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg"><title>Help Icon</title>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+                </svg></a>
+                <h1>Design Calculator</h1>
+                <p>A modular scale calculator to help designers make layout choices.</p>
+            </div>
+            
+            <div class="presetContainer">
+                
+                <div class="tabs">
+                    <button class="platformTab activeTab" onclick="platform(event, 'digital')">Digital</button>
+                    <button class="platformTab printTab" onclick="platform(event, 'print')">Print</button>
+                    <button class="platformTab" onclick="platform(event, 'custom')">Custom</button>
+                </div>
+
+                <form>
+                    <div id="digital" class="platform">
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>iPhone 5</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>iPhone 6, 7, 8</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>iPhone 6+, 7+, 8+</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>iPad</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>Laptop</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()" checked><span>1080p</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>4K</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>5K</span></label>
+                    </div>
+
+                    <div id="print" class="platform" style="display:none">
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>US Half Letter</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>US Letter</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>US Tabloid</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>ISO A5</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>ISO A4</span></label>
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>ISO A3</span></label>
+                    </div>
+
+                    <div id="custom" class="platform" style="display:none">
+                        <label><input type="radio" name="device" onchange="renderActivePreset()"><span>Custom</span></label>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="inputContainer">
+                <form id="inputs">
+
+                    <div class="width">
+                        <label>Width</label>
+                        <input type="number" id="width" value="" onchange="renderActiveRatio(); tableRender(); customSelect();">
+                    </div>
+
+                    <div class="height">
+                        <label>Height</label>
+                        <input type="number" id="height" value="" onchange="renderActiveRatio(); tableRender(); customSelect();">
+                    </div>
+
+                </form>
+
+                <div class="ratio">
+                    <p>Ratio</p>
+                    <select id="modularScale" onchange="renderActiveRatio(); tableRender()">
+                        <option value="0">X:X - Document Ratio (1.x)</option>
+                        <option value="1.067">15:16 - Minor Second (1.067)</option>
+                        <option value="1.125">8:9 - Major Second (1.125)</option>
+                        <option value="1.2">5:6 - Minor Third (1.2)</option>
+                        <option value="1.3333">3:4 - Perfect Fourth (1.333)</option>
+                        <option value="1.414">1:√2 - Aug. Fourth / Dim. Fifth (1.414)</option>
+                        <option value="1.5">2:3 - Perfect Fifth (1.5)</option>
+                        <option value="1.6">5:8 - Minor Sixth (1.6)</option>
+                        <option value="1.618">1:1.618 - Golden Section (1.618)</option>
+                        <option value="1.667">3:5 - Major Sixth (1.667)</option>
+                        <option value="1.778" selected>9:16 - Minor Seventh (1.778)</option>
+                        <option value="1.875">8:15 - Major Seventh (1.875)</option>
+                        <option value="2">1:2 - Octave (2)</option>
+                        <option value="2.5">2:5 - Major Tenth (2.5)</option>
+                        <option value="2.667">3:8 - Major Eleventh (2.667)</option>
+                        <option value="3">1:3 - Major Twelfth (3)</option>
+                        <option value="4">1:4 - Double Octave (4)</option>
+                    </select>
+                    <div id="activeRatio"></div>
+                </div>
+            </div>
+            
+            <div id="tablePrint"></div>
+
+        </div>
+        
+        <div class="footer">
+        
+            <div class="logo">
+                <p>V0.9 Design &amp; Code by</p>
+                <a href="http://www.archiebagnall.co.uk" target="_blank" rel="noopener">
+                    <svg version="1.1" viewbox="0 0 200 42" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><title>Archie Bagnall Logo</title><path d="M191.168,32.803h3.713l4.233-28.713h-3.712L191.168,32.803z M183.69,32.803h3.713l4.233-28.713h-3.711 L183.69,32.803z M177.143,28.436c-1.088,1.212-2.46,1.817-4.115,1.817c-1.628,0-2.975-0.556-4.04-1.667 c-1.066-1.11-1.6-2.518-1.6-4.22c0-1.731,0.565-3.207,1.696-4.426c1.131-1.22,2.488-1.829,4.072-1.829 c1.513,0,2.827,0.559,3.943,1.677c1.116,1.119,1.674,2.45,1.674,3.994C178.773,25.672,178.229,27.224,177.143,28.436z M179.144,19.265c-1.568-2.8-3.806-4.2-6.711-4.2c-2.46,0-4.578,0.908-6.354,2.722c-1.777,1.815-2.665,3.99-2.665,6.524 c0,2.435,0.847,4.541,2.541,6.319c1.694,1.779,3.695,2.668,6.002,2.668c1.947,0,3.764-0.784,5.451-2.353l-0.275,1.856h3.713 l2.527-17.306h-3.669L179.144,19.265z M148.987,32.803l1.042-7.133c0.346-2.274,1.047-4.104,2.101-5.485s2.245-2.073,3.574-2.073 c0.837,0,1.513,0.273,2.024,0.821c0.513,0.547,0.77,1.261,0.77,2.139c0,0.331-0.015,0.569-0.043,0.713l-1.643,11.019h3.626 l1.818-11.904c0.028-0.187,0.043-0.439,0.043-0.756c0-1.311-0.497-2.484-1.49-3.521c-0.994-1.037-2.117-1.556-3.37-1.556 c-1.152,0-2.207,0.289-3.164,0.864c-0.958,0.576-2.013,1.455-3.165,2.636l0.404-3.068h-3.668l-2.527,17.306H148.987z M139.008,28.402c-1.145,1.233-2.553,1.851-4.224,1.851c-1.556,0-2.873-0.559-3.953-1.678c-1.08-1.117-1.62-2.492-1.62-4.123 c0-1.674,0.579-3.148,1.738-4.426c1.159-1.276,2.496-1.915,4.008-1.915c1.541,0,2.888,0.573,4.04,1.721 c1.152,1.147,1.729,2.478,1.729,3.993C140.726,25.644,140.153,27.169,139.008,28.402z M141.082,19.455 c-0.446-1.326-1.278-2.389-2.496-3.189c-1.219-0.8-2.541-1.201-3.968-1.201c-2.551,0-4.745,0.918-6.583,2.754 c-1.838,1.836-2.757,4.029-2.757,6.579c0,2.448,0.832,4.544,2.495,6.286c1.664,1.743,3.662,2.614,5.995,2.614 c1.743,0,3.587-0.793,5.531-2.381c-0.159,2.141-0.864,3.84-2.117,5.098c-1.253,1.257-2.787,1.886-4.602,1.886 c-2.564,0-4.098-1.376-4.603-4.127h-3.37c0.217,2.463,1.124,4.311,2.723,5.542s3.363,1.847,5.293,1.847 c2.463,0,4.696-0.838,6.698-2.515c2.002-1.678,3.176-3.696,3.521-6.058l2.528-17.094h-3.674L141.082,19.455z M118.384,28.436 c-1.088,1.212-2.46,1.817-4.116,1.817c-1.627,0-2.974-0.556-4.04-1.667c-1.065-1.11-1.599-2.518-1.599-4.22 c0-1.731,0.565-3.207,1.696-4.426c1.131-1.22,2.487-1.829,4.072-1.829c1.513,0,2.826,0.559,3.943,1.677 c1.115,1.119,1.674,2.45,1.674,3.994C120.015,25.672,119.471,27.224,118.384,28.436z M120.385,19.265 c-1.568-2.8-3.806-4.2-6.711-4.2c-2.46,0-4.578,0.908-6.355,2.722c-1.776,1.815-2.664,3.99-2.664,6.524 c0,2.435,0.847,4.541,2.541,6.319c1.694,1.779,3.695,2.668,6.002,2.668c1.946,0,3.764-0.784,5.451-2.353l-0.275,1.856h3.713 l2.527-17.306h-3.67L120.385,19.265z M92.396,20.142c2.663,0,4.516,0.497,5.56,1.491c1.044,0.994,1.565,2.089,1.565,3.284 c0,1.065-0.349,1.973-1.048,2.722s-1.553,1.235-2.561,1.458c-1.009,0.224-2.738,0.335-5.187,0.335H90.4l1.39-9.29H92.396z M98.105,9.491c0.944,0.562,1.416,1.505,1.416,2.83c0,1.21-0.538,2.265-1.615,3.165c-1.077,0.9-2.95,1.35-5.62,1.35l1.226-8.188 C95.63,8.648,97.161,8.929,98.105,9.491z M86.212,32.803h5.66c3.485,0,6.28-0.706,8.383-2.118c2.103-1.411,3.154-3.254,3.154-5.53 c0-2.981-1.483-5.199-4.45-6.654c2.967-1.569,4.45-3.751,4.45-6.546c0-2.017-0.774-3.633-2.322-4.851 c-1.548-1.217-3.633-1.825-6.254-1.825h-4.559L86.212,32.803z M77.755,12.682c2.04,0,3.582,1.057,4.626,3.171h-9.402C73.937,13.739,75.529,12.682,77.755,12.682z M83.444,12.131c-1.58-1.623-3.476-2.435-5.689-2.435c-2.251,0-4.157,0.799-5.717,2.397c-1.561,1.598-2.341,3.485-2.341,5.662 c0,2.326,0.771,4.272,2.313,5.838c1.542,1.567,3.457,2.351,5.745,2.351c2.985,0,5.366-1.15,7.145-3.451l-2.369-1.791 c-1.244,1.53-2.786,2.294-4.626,2.294c-1.194,0-2.298-0.364-3.311-1.092c-1.014-0.727-1.664-1.88-1.949-3.46h13.132 C85.801,15.859,85.023,13.754,83.444,12.131z M64.267,25.516h3.208v-15.39h-3.208V25.516z M64.099,6.824 c0.497,0.485,1.088,0.728,1.772,0.728c0.672,0,1.253-0.243,1.744-0.728s0.737-1.069,0.737-1.753c0-0.671-0.246-1.253-0.737-1.744 S66.542,2.59,65.871,2.59c-0.684,0-1.275,0.246-1.772,0.737c-0.498,0.491-0.746,1.073-0.746,1.744 C63.353,5.755,63.601,6.339,64.099,6.824z M48.418,25.516h3.246v-8.488c0-1.256,0.413-2.325,1.241-3.208 c0.827-0.883,1.825-1.324,2.994-1.324c0.808,0,1.458,0.292,1.949,0.876c0.491,0.585,0.737,1.362,0.737,2.332v9.813h3.246V14.79 c0-1.393-0.476-2.59-1.427-3.591c-0.951-1-2.08-1.501-3.386-1.501c-1.119,0-2.067,0.233-2.845,0.7s-1.613,1.216-2.509,2.248V1.303 h-3.246V25.516z M41.572,22.68c-1.368,0-2.525-0.487-3.47-1.464c-0.945-0.976-1.417-2.179-1.417-3.609 c0-1.269,0.503-2.375,1.511-3.32c1.007-0.945,2.183-1.417,3.525-1.417c1.455,0,2.997,0.522,4.626,1.567v-3.619 c-1.518-0.746-2.991-1.119-4.421-1.119c-2.4,0-4.396,0.787-5.988,2.36c-1.592,1.573-2.388,3.553-2.388,5.941 c0,2.102,0.799,3.952,2.397,5.549c1.598,1.599,3.46,2.397,5.586,2.397c1.555,0,3.159-0.473,4.813-1.418v-3.712 C44.557,22.059,42.965,22.68,41.572,22.68z M24.438,10.126v15.39h3.246V16.99c0-1.144,0.37-2.098,1.11-2.863 c0.74-0.765,1.657-1.147,2.751-1.147c0.199,0,0.609,0.063,1.231,0.187l0.988-3.246c-0.584-0.149-1.032-0.224-1.343-0.224 c-1.107,0-2.005,0.283-2.696,0.849c-0.69,0.566-1.396,1.483-2.117,2.751v-3.171H24.438z M15.847,16.729H8.202l3.801-8.476 L15.847,16.729z M0.885,25.516h3.376l2.727-6.082h10.084l2.758,6.082h3.401L12.012,0.836L0.885,25.516z"></path></svg>
+                </a>
+            </div>
+            <p>This work is released under a <a rel="license" href="https://choosealicense.com/licenses/agpl-3.0/">GNU AGPLv3 license</a>.</p>
+        </div>
+        
+        <script type="text/javascript">
+            // REQUIRED VARIABLES ONLOAD
+            var dropdown = document.getElementById("modularScale");
+            var activeRatio = document.getElementById("activeRatio");
+            var device = document.getElementsByName("device");
+            
+            // FUNCTION 1: IDENTIFY ACTIVE RATIO
+            function renderActiveRatio() {
+                // Select width and height inputs
+                var width = Number(document.getElementById("width").value);
+                var height = Number(document.getElementById("height").value);
+
+                // Identify which input is highest and lowest
+                var highestInput = Math.max(width, height);
+                var lowestInput = Math.min(width, height);
+
+                var customRatio = highestInput/lowestInput;
+                
+                // If a dropdown option is selected, show ratio
+                // If not, calculate a custom ratio based on inputs (to 3 decimal places)
+                if (dropdown.value == "0") {
+                    activeRatio.innerHTML = customRatio.toFixed(3);
+                } else {
+                    activeRatio.innerHTML = dropdown.value;
+                }
+            }
+            
+            
+            // FUNCTION 2: APPLY DIMENSION PRESETS
+            function renderActivePreset() {
+                // Select device inputs
+                var device = document.getElementsByName("device");
+                
+                // Select width and height inputs
+                var width = document.getElementById("width");
+                var height = document.getElementById("height");
+                
+                // Select dropdown
+                var dropdown = document.getElementById("modularScale");
+                
+                // If a device is checked:
+                // If not, checked preset option is "custom":
+                
+                // iPhone 5
+                if (device[0].checked == true) {
+                    dropdown.value = "0";
+                    width.value = "320";
+                    height.value = "568";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // iPhone 6, 7, 8
+                else if (device[1].checked == true) {
+                    dropdown.value = "1.778";
+                    width.value = "375";
+                    height.value = "667";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // iPhone 6+, 7+, 8+
+                else if (device[2].checked == true) {
+                    dropdown.value = "1.778";
+                    width.value = "414";
+                    height.value = "736";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // iPad
+                else if (device[3].checked == true) {
+                    dropdown.value = "1.3333";
+                    width.value = "768";
+                    height.value = "1024";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // Laptop
+                else if (device[4].checked == true) {
+                    dropdown.value = "1.778";
+                    width.value = "1280";
+                    height.value = "720";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // 1080p
+                else if (device[5].checked == true) {
+                    dropdown.value = "1.778";
+                    width.value = "1920";
+                    height.value = "1080";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // 4k
+                else if (device[6].checked == true) {
+                    dropdown.value = "1.778";
+                    width.value = "3840";
+                    height.value = "2160";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // 5k
+                else if (device[7].checked == true) {
+                    dropdown.value = "1.778";
+                    width.value = "5120";
+                    height.value = "2880";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // US Half Letter
+                else if (device[8].checked == true) {
+                    dropdown.value = "0";
+                    width.value = "396";
+                    height.value = "612";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // US Letter
+                else if (device[9].checked == true) {
+                    dropdown.value = "0";
+                    width.value = "612";
+                    height.value = "792";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // US Tabloid
+                else if (device[10].checked == true) {
+                    dropdown.value = "0";
+                    width.value = "792";
+                    height.value = "1224";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // ISO A5
+                else if (device[11].checked == true) {
+                    dropdown.value = "1.414";
+                    width.value = "419.528";
+                    height.value = "595.276";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // ISO A4
+                else if (device[12].checked == true) {
+                    dropdown.value = "1.414";
+                    width.value = "595.276";
+                    height.value = "841.89";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // ISO A3
+                else if (device[13].checked == true) {
+                    dropdown.value = "1.414";
+                    width.value = "841.89";
+                    height.value = "1190.551";
+                    renderActiveRatio();
+                    tableRender();}
+                
+                // Custom
+                else if (device[14].checked == true) {
+                    dropdown.value = "0";
+                }
+            }
+            
+            
+            // FUNCTION 3: CUSTOM SELECT
+            function customSelect() {
+                var device = document.getElementsByName("device");
+                var dropdown = document.getElementById("modularScale");
+                
+                device[14].checked = true;
+                dropdown.value = "0";
+                
+                var digital = document.getElementById("digital");
+                var print = document.getElementById("print");
+                var custom = document.getElementById("custom");                
+                
+                digital.style.display = "none"; 
+                print.style.display = "none";  
+                custom.style.display = "block";
+                
+                platformTabs = document.getElementsByClassName("platformTab");
+                
+                platformTabs[0].className = platformTabs[0].className.replace(" activeTab", "");
+                platformTabs[1].className = platformTabs[1].className.replace(" activeTab", "");
+                platformTabs[2].className = platformTabs[2].className += " activeTab";
+            }
+            
+            
+            // FUNCTION 4: TABLE RENDER
+            // Thanks for Ben Wells for assistance with this code!
+            
+            function tableRender() {
+                // select variables that will be part of table calculations
+                var ratio = Number(activeRatio.innerHTML);
+                var width = Number(document.getElementById("width").value);
+                var height = Number(document.getElementById("height").value);
+                var highestInput = Math.max(width, height);
+                var rem = 16;
+                var threshold = 0.5;
+
+                // Picture this array as a list of objects, each with base, percent, and rem properties:
+                // [{ base: 1234, percent: 2345, rem: 3456 },
+                //  { base: 1234, percent: 2345, rem: 3456 },
+                //  { base: 1234, percent: 2345, rem: 3456 },
+                //  { base: 1234, percent: 2345, rem: 3456 }]
+
+                // Create and seed first values in array. 
+                var values = new Array();
+                values.push({               // The push() function adds a new element to the end of the array.
+                    base: highestInput,
+                    percent: 100,
+                    rem: highestInput / rem
+                })
+
+                // Use an incrementing index value to look up previous value in array.
+                var index = 0;
+
+                // Define a function that can be called repeatedly to increment index and to calculate the next base value.
+                var getNextBase = function() {
+                    index++;
+                    return values[index - 1].base / ratio;
+                };
+
+                // Get the first nextBase value so that while loop will run.
+                var nextBase = getNextBase();
+
+                // As each nextBase value is calculated in the loop, add it to the array only if greater than threshold.
+                while (nextBase >= threshold) {
+                    values.push({ 
+                        base: nextBase, 
+                        percent: (nextBase / highestInput) * 100, 
+                        rem: nextBase / rem 
+                    });
+                    nextBase = getNextBase()
+                } 
+
+                // Table HTML
+                var myTable= "<table><tr><td class='columnHead'>.00</td>";
+                myTable += "<td class='columnHead'>Whole</td>";
+                myTable += "<td class='columnHead'>% / vw</td>";
+                myTable += "<td class='columnHead'>REM</td></tr>";
+
+                // Depending on what you need, sometimes this forEach approach can look cleaner for iterating over an array of items.
+                values.forEach(function(row) {
+                    myTable += "<tr><td>" + row.base.toFixed(2) + "</td>";
+                    myTable += "<td>" + row.base.toFixed(0) + "</td>";
+                    myTable += "<td>" + row.percent.toFixed(2) + "</td>";
+                    myTable += "<td>" + row.rem.toFixed(2) + "</td></tr>";
+                })
+                
+                // Close table
+                myTable += "</table>";
+                
+                // RENDER TABLE
+                document.getElementById('tablePrint').innerHTML = myTable;
+            }
+            
+            
+            // FUNCTION 5: TAB INTERACTION
+            function platform(evt, format) {
+                                
+                var i, x, platformTabs;
+                x = document.getElementsByClassName("platform");
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
+                }
+                
+                platformTabs = document.getElementsByClassName("platformTab");
+                for (i = 0; i < x.length; i++) {
+                    platformTabs[i].className = platformTabs[i].className.replace(" activeTab", "");
+                }
+
+                document.getElementById(format).style.display = "block";
+                evt.currentTarget.className += " activeTab";
+            }
+        </script>
+        
+    </body>
+</html>
