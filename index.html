@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Design Calculator, V0.9</title>
+    <title>Design Calculator, V1.1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A modular scale calculator to help designers make layout choices.">
     <meta name="robots" content="index, follow">
@@ -277,7 +277,6 @@
         /* Container: Height Inputs */
     .inputContainer .height {
         float: left;
-        margin-bottom: 0.5rem;
         margin-left:-0.0625rem;
         width: 50%;
         
@@ -291,7 +290,6 @@
         /* Container: Width Inputs */
     .inputContainer .width {
         float: left;
-        margin-bottom: 0.5rem;
         width: 50%;
     }
     
@@ -350,6 +348,67 @@
     .footer .logo svg:hover {
         fill: #717c92;
     }
+    
+    /* ---------------- */
+    /* DIMENSION TOGGLE */
+    /* ---------------- */
+    
+    .dimensionToggle {
+        display: inline-block;
+        margin: 0 0 0.5rem 2.5rem;
+    }
+    
+    .dimensionToggle-input {
+        display: none;
+    }
+    
+    .dimensionToggle-label {
+        display: inline-block;
+        padding: 0.5rem 0rem 0.5rem 2.5rem;
+        position: relative;
+    }
+    
+    .dimensionToggle-label:before, .dimensionToggle-label:after {
+        content: "";
+        margin: 0;
+        outline: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translate(0, -50%);
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+    
+    .dimensionToggle-label:before {
+        background-color: #9E9E9E;
+        border-radius: 0.5rem;
+        height: 0.875rem;
+        left: 0.0625rem;
+        width: 2.125rem;    
+    }
+    
+    .dimensionToggle-label:after {
+        background-color: #FAFAFA;
+        border-radius: 50%;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
+        height: 1.25rem;
+        left: 0;
+        width: 1.25rem;
+    }
+    
+    .dimensionToggle-input:checked + .dimensionToggle-label:before {
+        background-color: #4e77cb;
+    }
+
+    .dimensionToggle-input:checked + .dimensionToggle-label:after {
+        background-color: #94addf;
+        -ms-transform: translate(80%, -50%);
+        -webkit-transform: translate(80%, -50%);
+        transform: translate(80%, -50%);
+    }
+    
 </style>
 
 <html>
@@ -420,8 +479,14 @@
                     </div>
 
                 </form>
+                
+                <div class="dimensionToggle">
+                    <label for="dimensionToggle">Landscape</label>
+                        <input type="checkbox" id="dimensionToggle" name="dimensionToggle" class="dimensionToggle-input" onclick="tableRender()">
+                    <label for="dimensionToggle" class="dimensionToggle-label">Portrait</label>
+                </div>
 
-                <div class="ratio">
+                <div class="ratio"> 
                     <p>Ratio</p>
                     <select id="modularScale" onchange="renderActiveRatio(); tableRender()">
                         <option value="0">X:X - Document Ratio (1.x)</option>
@@ -453,7 +518,7 @@
         <div class="footer">
         
             <div class="logo">
-                <p>V0.9 Design &amp; Code by</p>
+                <p>V1.1 Design &amp; Code by</p>
                 <a href="http://www.archiebagnall.co.uk" target="_blank" rel="noopener">
                     <svg version="1.1" viewbox="0 0 200 42" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><title>Archie Bagnall Logo</title><path d="M191.168,32.803h3.713l4.233-28.713h-3.712L191.168,32.803z M183.69,32.803h3.713l4.233-28.713h-3.711 L183.69,32.803z M177.143,28.436c-1.088,1.212-2.46,1.817-4.115,1.817c-1.628,0-2.975-0.556-4.04-1.667 c-1.066-1.11-1.6-2.518-1.6-4.22c0-1.731,0.565-3.207,1.696-4.426c1.131-1.22,2.488-1.829,4.072-1.829 c1.513,0,2.827,0.559,3.943,1.677c1.116,1.119,1.674,2.45,1.674,3.994C178.773,25.672,178.229,27.224,177.143,28.436z M179.144,19.265c-1.568-2.8-3.806-4.2-6.711-4.2c-2.46,0-4.578,0.908-6.354,2.722c-1.777,1.815-2.665,3.99-2.665,6.524 c0,2.435,0.847,4.541,2.541,6.319c1.694,1.779,3.695,2.668,6.002,2.668c1.947,0,3.764-0.784,5.451-2.353l-0.275,1.856h3.713 l2.527-17.306h-3.669L179.144,19.265z M148.987,32.803l1.042-7.133c0.346-2.274,1.047-4.104,2.101-5.485s2.245-2.073,3.574-2.073 c0.837,0,1.513,0.273,2.024,0.821c0.513,0.547,0.77,1.261,0.77,2.139c0,0.331-0.015,0.569-0.043,0.713l-1.643,11.019h3.626 l1.818-11.904c0.028-0.187,0.043-0.439,0.043-0.756c0-1.311-0.497-2.484-1.49-3.521c-0.994-1.037-2.117-1.556-3.37-1.556 c-1.152,0-2.207,0.289-3.164,0.864c-0.958,0.576-2.013,1.455-3.165,2.636l0.404-3.068h-3.668l-2.527,17.306H148.987z M139.008,28.402c-1.145,1.233-2.553,1.851-4.224,1.851c-1.556,0-2.873-0.559-3.953-1.678c-1.08-1.117-1.62-2.492-1.62-4.123 c0-1.674,0.579-3.148,1.738-4.426c1.159-1.276,2.496-1.915,4.008-1.915c1.541,0,2.888,0.573,4.04,1.721 c1.152,1.147,1.729,2.478,1.729,3.993C140.726,25.644,140.153,27.169,139.008,28.402z M141.082,19.455 c-0.446-1.326-1.278-2.389-2.496-3.189c-1.219-0.8-2.541-1.201-3.968-1.201c-2.551,0-4.745,0.918-6.583,2.754 c-1.838,1.836-2.757,4.029-2.757,6.579c0,2.448,0.832,4.544,2.495,6.286c1.664,1.743,3.662,2.614,5.995,2.614 c1.743,0,3.587-0.793,5.531-2.381c-0.159,2.141-0.864,3.84-2.117,5.098c-1.253,1.257-2.787,1.886-4.602,1.886 c-2.564,0-4.098-1.376-4.603-4.127h-3.37c0.217,2.463,1.124,4.311,2.723,5.542s3.363,1.847,5.293,1.847 c2.463,0,4.696-0.838,6.698-2.515c2.002-1.678,3.176-3.696,3.521-6.058l2.528-17.094h-3.674L141.082,19.455z M118.384,28.436 c-1.088,1.212-2.46,1.817-4.116,1.817c-1.627,0-2.974-0.556-4.04-1.667c-1.065-1.11-1.599-2.518-1.599-4.22 c0-1.731,0.565-3.207,1.696-4.426c1.131-1.22,2.487-1.829,4.072-1.829c1.513,0,2.826,0.559,3.943,1.677 c1.115,1.119,1.674,2.45,1.674,3.994C120.015,25.672,119.471,27.224,118.384,28.436z M120.385,19.265 c-1.568-2.8-3.806-4.2-6.711-4.2c-2.46,0-4.578,0.908-6.355,2.722c-1.776,1.815-2.664,3.99-2.664,6.524 c0,2.435,0.847,4.541,2.541,6.319c1.694,1.779,3.695,2.668,6.002,2.668c1.946,0,3.764-0.784,5.451-2.353l-0.275,1.856h3.713 l2.527-17.306h-3.67L120.385,19.265z M92.396,20.142c2.663,0,4.516,0.497,5.56,1.491c1.044,0.994,1.565,2.089,1.565,3.284 c0,1.065-0.349,1.973-1.048,2.722s-1.553,1.235-2.561,1.458c-1.009,0.224-2.738,0.335-5.187,0.335H90.4l1.39-9.29H92.396z M98.105,9.491c0.944,0.562,1.416,1.505,1.416,2.83c0,1.21-0.538,2.265-1.615,3.165c-1.077,0.9-2.95,1.35-5.62,1.35l1.226-8.188 C95.63,8.648,97.161,8.929,98.105,9.491z M86.212,32.803h5.66c3.485,0,6.28-0.706,8.383-2.118c2.103-1.411,3.154-3.254,3.154-5.53 c0-2.981-1.483-5.199-4.45-6.654c2.967-1.569,4.45-3.751,4.45-6.546c0-2.017-0.774-3.633-2.322-4.851 c-1.548-1.217-3.633-1.825-6.254-1.825h-4.559L86.212,32.803z M77.755,12.682c2.04,0,3.582,1.057,4.626,3.171h-9.402C73.937,13.739,75.529,12.682,77.755,12.682z M83.444,12.131c-1.58-1.623-3.476-2.435-5.689-2.435c-2.251,0-4.157,0.799-5.717,2.397c-1.561,1.598-2.341,3.485-2.341,5.662 c0,2.326,0.771,4.272,2.313,5.838c1.542,1.567,3.457,2.351,5.745,2.351c2.985,0,5.366-1.15,7.145-3.451l-2.369-1.791 c-1.244,1.53-2.786,2.294-4.626,2.294c-1.194,0-2.298-0.364-3.311-1.092c-1.014-0.727-1.664-1.88-1.949-3.46h13.132 C85.801,15.859,85.023,13.754,83.444,12.131z M64.267,25.516h3.208v-15.39h-3.208V25.516z M64.099,6.824 c0.497,0.485,1.088,0.728,1.772,0.728c0.672,0,1.253-0.243,1.744-0.728s0.737-1.069,0.737-1.753c0-0.671-0.246-1.253-0.737-1.744 S66.542,2.59,65.871,2.59c-0.684,0-1.275,0.246-1.772,0.737c-0.498,0.491-0.746,1.073-0.746,1.744 C63.353,5.755,63.601,6.339,64.099,6.824z M48.418,25.516h3.246v-8.488c0-1.256,0.413-2.325,1.241-3.208 c0.827-0.883,1.825-1.324,2.994-1.324c0.808,0,1.458,0.292,1.949,0.876c0.491,0.585,0.737,1.362,0.737,2.332v9.813h3.246V14.79 c0-1.393-0.476-2.59-1.427-3.591c-0.951-1-2.08-1.501-3.386-1.501c-1.119,0-2.067,0.233-2.845,0.7s-1.613,1.216-2.509,2.248V1.303 h-3.246V25.516z M41.572,22.68c-1.368,0-2.525-0.487-3.47-1.464c-0.945-0.976-1.417-2.179-1.417-3.609 c0-1.269,0.503-2.375,1.511-3.32c1.007-0.945,2.183-1.417,3.525-1.417c1.455,0,2.997,0.522,4.626,1.567v-3.619 c-1.518-0.746-2.991-1.119-4.421-1.119c-2.4,0-4.396,0.787-5.988,2.36c-1.592,1.573-2.388,3.553-2.388,5.941 c0,2.102,0.799,3.952,2.397,5.549c1.598,1.599,3.46,2.397,5.586,2.397c1.555,0,3.159-0.473,4.813-1.418v-3.712 C44.557,22.059,42.965,22.68,41.572,22.68z M24.438,10.126v15.39h3.246V16.99c0-1.144,0.37-2.098,1.11-2.863 c0.74-0.765,1.657-1.147,2.751-1.147c0.199,0,0.609,0.063,1.231,0.187l0.988-3.246c-0.584-0.149-1.032-0.224-1.343-0.224 c-1.107,0-2.005,0.283-2.696,0.849c-0.69,0.566-1.396,1.483-2.117,2.751v-3.171H24.438z M15.847,16.729H8.202l3.801-8.476 L15.847,16.729z M0.885,25.516h3.376l2.727-6.082h10.084l2.758,6.082h3.401L12.012,0.836L0.885,25.516z"></path></svg>
                 </a>
@@ -653,12 +718,23 @@
             function tableRender() {
                 // select variables that will be part of table calculations
                 var ratio = Number(activeRatio.innerHTML);
+                
                 var width = Number(document.getElementById("width").value);
                 var height = Number(document.getElementById("height").value);
+                
                 var highestInput = Math.max(width, height);
+                var lowestInput = Math.min(width, height);
+                
+                var dimensionToggle = document.getElementById("dimensionToggle");
+               
                 var rem = 16;
                 var threshold = 0.5;
 
+                // If Dimension = Portrait, then use the lowest input instead
+                if (dimensionToggle.checked == true){
+                    highestInput = lowestInput;
+                }
+                
                 // Picture this array as a list of objects, each with base, percent, and rem properties:
                 // [{ base: 1234, percent: 2345, rem: 3456 },
                 //  { base: 1234, percent: 2345, rem: 3456 },
@@ -686,14 +762,16 @@
                 var nextBase = getNextBase();
 
                 // As each nextBase value is calculated in the loop, add it to the array only if greater than threshold.
-                while (nextBase >= threshold) {
+                var count = 0;
+                while (nextBase >= threshold && count <= 48) {
+                    count++;
                     values.push({ 
                         base: nextBase, 
                         percent: (nextBase / highestInput) * 100, 
                         rem: nextBase / rem 
                     });
                     nextBase = getNextBase()
-                } 
+                }
 
                 // Table HTML
                 var myTable= "<table><tr><td class='columnHead'>.00</td>";
